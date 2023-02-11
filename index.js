@@ -11,17 +11,17 @@ export default class hello_react_360 extends React.Component {
     return (
       <View style={styles.panel}>
         <View style={styles.greetingBox}>
-          <Text style={styles.myName}>
-            Made by Abhinav Dubey
+          <Text style={styles.title}>
+            Beach 360 view
           </Text>
         </View>
 
         <View style={styles.greetingBox}>
-          <Text style={styles.greeting}>
+          {/* <Text style={styles.greeting}>
           Made by 
-          </Text>
+          </Text> */}
           <Text style={styles.myName}>
-            Abhinav Dubey
+            - Abhinav Dubey
           </Text>
         </View>
       </View>
@@ -34,21 +34,24 @@ export default class hello_react_360 extends React.Component {
 const styles = StyleSheet.create({
   panel: {
     width: 1000,
-    height: 90,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   greetingBox: {
-    padding: 20,
+    padding: 0,
   },
   greeting: {
-    fontSize: 30,
-    color:"cyan"
+    fontSize: 10,
+    color:"blue"
 
   },
   myName: {
-    fontSize: 50,
-    color:'blue',
+    fontSize:20,
+    color:'cyan',
+  },
+  title: {
+    fontSize:40,
   },
 });
 
