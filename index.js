@@ -1,58 +1,117 @@
 import React from 'react';
 import {
   AppRegistry,
+  Environment,
   StyleSheet,
   Text,
   View,
+  VrButton,
 } from 'react-360';
 
-export default class hello_react_360 extends React.Component {
-  render() {
-    return (
-      <View style={styles.panel}>
-        <View style={styles.greetingBox}>
-          <Text style={styles.title}>
-            Beach 360 view
-          </Text>
-        </View>
+class Background extends React.Component {
+  constructor(props) {
+    super();
+    Environment.setBackgroundImage(props.uri, {format: props.format});
+  }
 
-        <View style={styles.greetingBox}>
-          {/* <Text style={styles.greeting}>
-          Made by 
-          </Text> */}
-          <Text style={styles.myName}>
-            - Abhinav Dubey
-          </Text>
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.uri !== this.props.uri ||
+      nextProps.format !== this.props.format
+    ) {
+      Environment.setBackgroundImage(nextProps.uri, {format: nextProps.format});
+    }
+  }
+
+  render() {
+    return null;
+  }
+}
+
+class Slideshow extends React.Component {
+  state = {
+    index: 0,
+  };
+
+  _prevPhoto = () => {
+    let next = this.state.index - 1;
+    if (next < 0) {
+      next += this.props.photos.length;
+    }
+    this.setState({
+      index: next,
+    });
+  };
+
+  _nextPhoto = () => {
+    this.setState({
+      index: this.state.index + 1,
+    });
+  };
+
+  render() {
+    const current = this.props.photos[
+      this.state.index % this.props.photos.length
+    ];
+    return (
+      <View style={styles.wrapper}>
+        <Background uri={current.uri} format={current.format} />
+        <View style={styles.controls}>
+          <VrButton onClick={this._prevPhoto} style={styles.button}>
+            <Text style={styles.buttonText}>{"<"}</Text>
+          </VrButton>
+          <View>
+            <Text style={styles.title}>{current.title}</Text>
+          </View>
+          <VrButton onClick={this._nextPhoto} style={styles.button}>
+            <Text style={styles.buttonText}>{'>'}</Text>
+          </VrButton>
         </View>
       </View>
-
-      
     );
   }
-};
+}
 
 const styles = StyleSheet.create({
-  panel: {
-    width: 1000,
-    height: 100,
-    justifyContent: 'center',
+  wrapper: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    height: 600,
+    width: 1000,
   },
-  greetingBox: {
-    padding: 0,
-  },
-  greeting: {
-    fontSize: 10,
-    color:"blue"
-
-  },
-  myName: {
-    fontSize:20,
-    color:'cyan',
+  controls: {
+    backgroundColor:'rgba(0, 0, 0, 0.5)',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: 300,
+    padding: 10,
   },
   title: {
-    fontSize:40,
+    color: 'white',
+    textAlign: 'left',
+    fontSize: 36,
+    fontWeight: 'bold',
+  },
+  button: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: 3,
+    width: 30,
+    height: 40,
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  TitleText: {
+    textAlign: 'center',
+    color: '#ffffff',
+    fontSize: 34,
+    fontWeight: 'bold',
   },
 });
 
-AppRegistry.registerComponent('hello_react_360', () => hello_react_360);
+AppRegistry.registerComponent('Slideshow', () => Slideshow);
